@@ -120,3 +120,24 @@ export const invest = async (req: express.Request, res: express.Response) => {
     res.status(500).json({ message: 'Failed to update target' });
   }
 };
+
+export const close = async (req: express.Request, res: express.Response) => {
+  try {
+    const date = new Date();
+    const targetId = req.params.id;
+    const target = await Target.updateOne(
+      { _id: targetId },
+      {
+        closedAt: date,
+        isClosed: true,
+      }
+    );
+    if (!target) {
+      return res.status(404).json({ message: 'This target does not exist' });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Failed to update target' });
+  }
+};

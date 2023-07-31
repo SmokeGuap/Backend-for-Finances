@@ -7,6 +7,7 @@ import {
   getAll,
   updateDaysToEnd,
   invest,
+  close,
 } from 'controllers/TargetControllers';
 
 export default (router: express.Router) => {
@@ -14,5 +15,6 @@ export default (router: express.Router) => {
   router.get('/target', checkAuth, getAll, updateDaysToEnd);
   router.patch('/target/:id', checkAuth, update);
   router.delete('/target/:id', checkAuth, remove);
-  router.post('/target/:id', checkAuth, invest);
+  router.patch('/target/:id/invest', checkAuth, invest);
+  router.patch('/target/:id/close', checkAuth, close);
 };
