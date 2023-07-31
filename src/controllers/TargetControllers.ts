@@ -88,7 +88,9 @@ export const updateDaysToEnd = async (
       {
         $set: {
           daysToEnd: {
-                $divide: [{ $subtract: ['$deadlineDate', date] }, 86400000],
+            $round: [
+              { $divide: [{ $subtract: ['$deadlineDate', date] }, 86400000] },
+            ],
           },
         },
       },
