@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import UserModel from '../models/user';
+import User from '../models/user';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -16,7 +16,7 @@ export const register = async (req: express.Request, res: express.Response) => {
       return res.status(400).json({ message: 'All fields must be filled' });
     }
 
-    const existingUser = await UserModel.findOne({ email });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
         .status(400)
@@ -25,7 +25,7 @@ export const register = async (req: express.Request, res: express.Response) => {
 
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
-    const doc = new UserModel({
+    const doc = new User({
       username: username,
       email: email,
       passwordHash,
@@ -49,9 +49,7 @@ export const login = async (req: express.Request, res: express.Response) => {
       return res.status(400).json({ message: 'All fields must be filled' });
     }
 
-    const existingUser = await UserModel.findOne({ email }).select(
-      '+passwordHash'
-    );
+    const existingUser = await User.findOne({ email }).select('+passwordHash');
     if (!existingUser) {
       return res.status(400).json({ msg: 'Invalid username or password' });
     }
