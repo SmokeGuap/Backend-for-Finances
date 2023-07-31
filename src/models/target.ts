@@ -12,7 +12,6 @@ const TargetSchema = new mongoose.Schema({
   isClosed: { type: Boolean },
   createdAt: { type: Date },
   closedAt: { type: Date },
-  currentMonthAmount: { type: Number },
   totalAmount: { type: Number },
   user: {
     type: mongoose.Schema.Types.ObjectId,

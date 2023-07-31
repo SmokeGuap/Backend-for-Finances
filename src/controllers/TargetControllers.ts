@@ -39,6 +39,7 @@ export const create = async (req: express.Request, res: express.Response) => {
       name: req.body.name,
       amount: req.body.amount,
       initialDeposit: req.body.initialDeposit,
+      totalAmount: req.body.initialDeposit,
       percent: req.body.percent,
       depositTerm: req.body.depositTerm,
       category: req.body.category,
@@ -95,6 +96,25 @@ export const updateDaysToEnd = async (
         },
       },
     ]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Failed to update target' });
+  }
+};
+
+export const invest = async (req: express.Request, res: express.Response) => {
+  try {
+    const targetId = req.params.id;
+    const target = await Target.updateOne(
+      { _id: targetId },
+      {
+        $inc: { totalAmount: req.body.amount },
+      }
+    );
+    if (!target) {
+      return res.status(404).json({ message: 'This target does not exist' });
+    }
+    res.json({ success: true });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Failed to update target' });
