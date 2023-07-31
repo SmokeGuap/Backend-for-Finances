@@ -10,7 +10,7 @@ import {
 } from 'controllers/TransactionControllers';
 
 export default (router: express.Router) => {
-  router.post('/transaction', checkAuth, create);
+  router.post('/transaction?', checkAuth, create);
   router.get('/transaction', checkAuth, getAll);
   router.get('/transaction/by-category', checkAuth, getAllByCategory);
   router.get('/transaction/by-type', checkAuth, getAllByTransactionType);

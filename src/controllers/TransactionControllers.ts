@@ -4,7 +4,18 @@ import Transaction from '../models/transaction';
 
 export const getAll = async (req: express.Request, res: express.Response) => {
   try {
-    const transactions = await Transaction.find({ user: req.userId });
+    const transactionYear = req.query.year;
+    const transactionMonth = req.query.month;
+    const startDate = new Date(+transactionYear, +transactionMonth - 1, 1);
+    const endDate = new Date(+transactionYear, +transactionMonth, 1);
+    const userId = req.userId;
+    const transactions = await Transaction.find({
+      user: userId,
+      transactionDate: {
+        $gte: startDate,
+        $lte: endDate,
+      },
+    });
     res.json(transactions);
   } catch (error) {
     console.log(error);

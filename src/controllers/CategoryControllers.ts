@@ -3,8 +3,9 @@ import express from 'express';
 import Category from '../models/category';
 
 export const getAll = async (req: express.Request, res: express.Response) => {
-  try {
-    const categories = await Category.find({ user: req.userId });
+  try {    
+    const userId = req.userId;
+    const categories = await Category.find({ user: userId });
     res.json(categories);
   } catch (error) {
     console.log(error);

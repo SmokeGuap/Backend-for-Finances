@@ -9,7 +9,8 @@ export const getAll = async (
   next: NextFunction
 ) => {
   try {
-    const targets = await Target.find({ user: req.userId });
+    const userId = req.userId;
+    const targets = await Target.find({ user: userId });
     res.json(targets);
     next();
   } catch (error) {
