@@ -1,9 +1,10 @@
+import express from 'express';
 import bcrypt from 'bcrypt';
 import UserModel from '../db/users';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-export const register = async (req, res) => {
+export const register = async (req: express.Request, res: express.Response) => {
   try {
     const { username, email, password } = req.body;
 

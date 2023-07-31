@@ -1,11 +1,13 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import cors from 'cors';
+import router from './router/auth';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 const DB_HOST = process.env.DB_HOST;
 
 mongoose
@@ -14,6 +16,9 @@ mongoose
   .catch((error) => console.log('DB error', error));
 
 app.use(cors());
+app.use(bodyParser.json());
+
+app.use('/', router);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
