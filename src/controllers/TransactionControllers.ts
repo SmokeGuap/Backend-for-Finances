@@ -1,20 +1,13 @@
 import express from 'express';
 
 import Transaction from '../models/transaction';
+import mongoose from 'mongoose';
 
 export const getAll = async (req: express.Request, res: express.Response) => {
   try {
-    const transactionYear = req.query.year;
-    const transactionMonth = req.query.month;
-    const startDate = new Date(+transactionYear, +transactionMonth - 1, 1);
-    const endDate = new Date(+transactionYear, +transactionMonth, 1);
     const userId = req.userId;
     const transactions = await Transaction.find({
       user: userId,
-      transactionDate: {
-        $gte: startDate,
-        $lte: endDate,
-      },
     });
     res.json(transactions);
   } catch (error) {
@@ -28,8 +21,27 @@ export const getAllByCategory = async (
   res: express.Response
 ) => {
   try {
+    const transactionYear = req.query.year;
+    const transactionMonth = req.query.month;
+    const startDate = new Date(+transactionYear, +transactionMonth - 1, 1);
+    const endDate = new Date(+transactionYear, +transactionMonth, 1);
+    const userId = req.userId;
     const transactions = await Transaction.aggregate([
-      { $group: { _id: '$category', amount: { $sum: '$amount' } } },
+      {
+        $match: {
+          transactionDate: {
+            $gte: startDate,
+            $lte: endDate,
+          },
+          user: new mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $group: {
+          _id: '$category',
+          amount: { $sum: '$amount' },
+        },
+      },
     ]);
     res.json(transactions);
   } catch (error) {
@@ -43,8 +55,27 @@ export const getAllByTransactionType = async (
   res: express.Response
 ) => {
   try {
+    const transactionYear = req.query.year;
+    const transactionMonth = req.query.month;
+    const startDate = new Date(+transactionYear, +transactionMonth - 1, 1);
+    const endDate = new Date(+transactionYear, +transactionMonth, 1);
+    const userId = req.userId;
     const transactions = await Transaction.aggregate([
-      { $group: { _id: '$transactionType', amount: { $sum: '$amount' } } },
+      {
+        $match: {
+          transactionDate: {
+            $gte: startDate,
+            $lte: endDate,
+          },
+          user: new mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $group: {
+          _id: '$transactionType',
+          amount: { $sum: '$amount' },
+        },
+      },
     ]);
     res.json(transactions);
   } catch (error) {
