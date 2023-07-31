@@ -1,9 +1,10 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import UserModel from '../db/users';
 import * as dotenv from 'dotenv';
 dotenv.config();
+
+import UserModel from '../models/user';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
