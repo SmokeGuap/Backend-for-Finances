@@ -1,9 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import router from './router/auth';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
+import router from 'router';
 dotenv.config();
 
 const app = express();
@@ -18,7 +18,7 @@ mongoose
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/', router);
+app.use('/', router());
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
